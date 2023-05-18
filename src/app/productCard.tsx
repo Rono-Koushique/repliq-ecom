@@ -1,5 +1,6 @@
 import { Product } from "@/types/products";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
@@ -7,25 +8,33 @@ type Props = {
 };
 
 export default function ProductCard({ product }: Props) {
-    const { id, title, price, description, category, image } = product;
+    const { id, title, price, description, category, images } = product;
     return (
-        <div className="flex flex-col bg-white z-30 p-8 h-full rounded-md gap-3 shadow-xl">
+        <div className="flex flex-col bg-white z-20 p-8 h-full rounded-md gap-3 shadow-md">
             <div className="mx-auto">
-                <Image
-                    className="object-contain w-[200px] h-[200px]"
-                    src={image}
-                    width={200}
-                    height={200}
-                    alt={title}
-                />
+                <Link href={`/product/${id}`}>
+                    <Image
+                        className="object-contain w-full h-[200px]"
+                        src={images[0]}
+                        width={200}
+                        height={200}
+                        alt={title}
+                    />
+                </Link>
             </div>
             <p className="text-xs text-gray-400 leading-none capitalize">
                 {category}
             </p>
-            <h4 className="text-lg font-bold leading-snug">{title}</h4>
-            <p className="text-xs text-gray-600 line-clamp-2">{description}</p>
+            <Link href={`/product/${id}`}>
+                <h4 className="text-lg font-bold leading-snug text-gray-800 hover:underline underline-offset-2">
+                    {title}
+                </h4>
+            </Link>
+            <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                {description}
+            </p>
             <div className="mt-auto flex flex-col gap-2 w-full">
-                <div className="mx-auto mt-2 text-lg font-medium">{`$ ${price}`}</div>
+                <div className="mt-2 text-lg font-medium">{`Price: $${price}`}</div>
                 <button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out">
                     Add to Basket
                 </button>

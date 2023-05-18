@@ -2,17 +2,19 @@ import Image from "next/image";
 import ProductList from "./productList";
 
 async function getAllProducts() {
-    const res = await fetch("https://fakestoreapi.com/products");
+    const res = await fetch("https://dummyjson.com/products");
     const data = await res.json();
-    return data;
+    const products = data.products;
+    return products;
 }
 
 export default async function Home() {
     const products = await getAllProducts();
     return (
         <main className="flex min-h-screen flex-col bg-slate-100">
-            <h1>Homepage</h1>
-            {products && <ProductList products={products} />}
+            <div className="py-24 px-20">
+                {products && <ProductList products={products} />}
+            </div>
         </main>
     );
 }
