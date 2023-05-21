@@ -6,7 +6,7 @@ type Props = {};
 
 export default function Header({}: Props) {
     return (
-        <nav className="grid grid-cols-3 px-20 py-4 bg-white/80 backdrop-blur-xl sticky z-20 top-0 shadow-lg">
+        <nav className="grid grid-cols-3 px-20 py-4 h-20 bg-white/80 backdrop-blur-xl sticky z-20 top-0 shadow-lg">
             <div className="my-auto">
                 <Link href="/" className="text-xl text-gray-800 font-bold">
                     Q-Mart
