@@ -1,5 +1,4 @@
-import Image from "next/image";
-import ProductList from "./productList";
+import ProductList from "./_components/productList";
 
 async function getAllProducts() {
     const res = await fetch("https://dummyjson.com/products");

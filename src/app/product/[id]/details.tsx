@@ -10,8 +10,14 @@ type Props = {
 
 export default function Details({ product }: Props) {
     const [quantity, setQuantity] = React.useState(1);
-    const { id, title,  price, rating, brand, stock } =
-        product;
+    const { id, title, price, rating, brand, stock } = product;
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const data = event.target.value;
+        setQuantity(parseInt(data));
+    };
+
     return (
         <div className="flex flex-col gap-4">
             <div>
@@ -55,7 +61,12 @@ export default function Details({ product }: Props) {
                 </p>
             </div>
             <div className="flex items-center mt-8">
-                <p>Quantity: {quantity}</p>
+                <p>Quantity: </p>
+                <input
+                    className="text-right border border-gray-300 px-1 w-8 rounded ml-1"
+                    value={quantity}
+                    onChange={handleChange}
+                />
                 <button
                     className="ml-4 leading-none w-8 h-8 rounded-full bg-gray-500 text-white text-xl flex items-center justify-center hover:bg-gray-600 active:bg-gray-400 "
                     onClick={() => setQuantity((prev) => prev + 1)}

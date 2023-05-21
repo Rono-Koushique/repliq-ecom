@@ -1,3 +1,4 @@
+import AddToCartBtn from "./addToCartBtn";
 import { Product } from "@/types/products";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,7 @@ type Props = {
 export default function ProductCard({ product }: Props) {
     const { id, title, price, description, category, images } = product;
     return (
-        <div className="flex flex-col bg-white z-20 p-8 h-full rounded-md gap-3 shadow-md">
+        <div className="flex flex-col bg-white p-8 h-full rounded-md gap-3 shadow-md">
             <div className="mx-auto">
                 <Link href={`/product/${id}`}>
                     <Image
@@ -35,9 +36,7 @@ export default function ProductCard({ product }: Props) {
             </p>
             <div className="mt-auto flex flex-col gap-2 w-full">
                 <div className="mt-2 text-lg font-medium">{`Price: $${price}`}</div>
-                <button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out">
-                    Add to Basket
-                </button>
+                <AddToCartBtn product={product} />
             </div>
         </div>
     );
