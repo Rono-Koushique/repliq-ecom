@@ -3,19 +3,35 @@ import React from "react";
 import { Product } from "@/types/products";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
+import {
+    cartProductCountSelector,
+    updateInCart,
+} from "@/lib/redux/slices/cartSlice";
 
 type Props = {
     product: Product;
 };
 
 export default function Details({ product }: Props) {
-    const [quantity, setQuantity] = React.useState(1);
     const { id, title, price, rating, brand, stock } = product;
+    const currentQuantityInCart = useAppSelector((state) =>
+        cartProductCountSelector(state, id)
+    );
 
+    const [quantity, setQuantity] = React.useState(
+        currentQuantityInCart ? currentQuantityInCart : 0
+    );
+
+    const dispatch = useAppDispatch();
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const data = event.target.value;
         setQuantity(parseInt(data));
+    };
+
+    const handleAddToCart = () => {
+        dispatch(updateInCart({ product: product, updateInfo: { quantity } }));
     };
 
     return (
@@ -69,7 +85,11 @@ export default function Details({ product }: Props) {
                 />
                 <button
                     className="ml-4 leading-none w-8 h-8 rounded-full bg-gray-500 text-white text-xl flex items-center justify-center hover:bg-gray-600 active:bg-gray-400 "
-                    onClick={() => setQuantity((prev) => prev + 1)}
+                    onClick={() =>
+                        setQuantity((prev) => {
+                            return prev < parseInt(stock) ? prev + 1 : prev;
+                        })
+                    }
                 >
                     <FaChevronUp className="text-sm" />
                 </button>
@@ -85,8 +105,11 @@ export default function Details({ product }: Props) {
                 </button>
             </div>
             <div>
-                <button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out">
-                    Add to Cart
+                <button
+                    onClick={handleAddToCart}
+                    className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out"
+                >
+                    {!currentQuantityInCart ? "Add to cart" : "Update in cart"}
                 </button>
             </div>
         </div>

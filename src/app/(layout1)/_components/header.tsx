@@ -1,4 +1,4 @@
-import CartButton from "@/app/_components/cartBtn";
+import CartButton from "@/app/(layout1)/_components/cartBtn";
 import Link from "next/link";
 import React from "react";
 
@@ -24,9 +24,12 @@ export default function Header({}: Props) {
             </div>
             <div className="flex gap-3 items-center ml-auto">
                 <CartButton />
-                <button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 px-6 py-2.5 text-white rounded-full transition duration-200 ease-in-out">
+                <Link
+                    href="/auth/login"
+                    className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 px-6 py-2.5 text-white rounded-full transition duration-200 ease-in-out"
+                >
                     Sign In
-                </button>
+                </Link>
             </div>
         </nav>
     );

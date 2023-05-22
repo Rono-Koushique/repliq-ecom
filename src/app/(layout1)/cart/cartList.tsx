@@ -1,8 +1,14 @@
-import { removeFromCart } from "@/lib/redux/slices/cartSlice";
+import {
+    addOneToCart,
+    removeFromCart,
+    removeOneFromCart,
+} from "@/lib/redux/slices/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { AiFillDelete } from "react-icons/ai";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 type Props = {};
 
@@ -50,13 +56,41 @@ export default function CartList({}: Props) {
                                     />
                                 </td>
                                 <td className="px-6 py-4">
-                                    {cartProduct.title}
+                                    <Link href={`/product/${cartProduct.id}`} className="hover:underline underline-offset-2">
+                                        {cartProduct.title}
+                                    </Link>
                                 </td>
                                 <td className="px-6 py-4">
                                     {cartProduct.price}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {cartProduct.quantity}
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            className="leading-none w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center hover:bg-gray-600 active:bg-gray-400 "
+                                            onClick={() =>
+                                                dispatch(
+                                                    addOneToCart({
+                                                        product: cartProduct,
+                                                    })
+                                                )
+                                            }
+                                        >
+                                            <FaChevronUp className="text-sm" />
+                                        </button>
+                                        <p>{cartProduct.quantity}</p>
+                                        <button
+                                            className="leading-none w-8 h-8 rounded-full bg-gray-300 text-white flex items-center justify-center hover:bg-gray-600 active:bg-gray-400"
+                                            onClick={() =>
+                                                dispatch(
+                                                    removeOneFromCart({
+                                                        product: cartProduct,
+                                                    })
+                                                )
+                                            }
+                                        >
+                                            <FaChevronDown className="text-sm" />
+                                        </button>
+                                    </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     {cartProduct.quantity *
@@ -66,7 +100,9 @@ export default function CartList({}: Props) {
                                     <button
                                         onClick={() =>
                                             dispatch(
-                                                removeFromCart(cartProduct)
+                                                removeFromCart({
+                                                    product: cartProduct,
+                                                })
                                             )
                                         }
                                     >

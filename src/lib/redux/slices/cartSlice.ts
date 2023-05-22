@@ -1,10 +1,6 @@
-import { Product } from "@/types/products";
+import { Product, CartProduct } from "@/types/products";
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-
-type CartProduct = Product & {
-    quantity: number;
-};
 
 type CartState = {
     cartProducts: CartProduct[];
@@ -18,23 +14,74 @@ export const CartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart: (state, action: PayloadAction<Product>) => {
+        // adds a unit to an item
+        addOneToCart: (
+            state,
+            action: PayloadAction<{ product: Product | CartProduct }>
+        ) => {
             const existingItem = state.cartProducts.find(
-                (cartProduct) => cartProduct.id === action.payload.id
+                (cartProduct) => cartProduct.id === action.payload.product.id
             );
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                state.cartProducts.push({ ...action.payload, quantity: 1 });
+                state.cartProducts.push({
+                    ...action.payload.product,
+                    quantity: 1,
+                });
             }
         },
-        removeFromCart: (state, action: PayloadAction<Product>) => {
+        // removes a unit from an item
+        removeOneFromCart: (
+            state,
+            action: PayloadAction<{ product: Product | CartProduct }>
+        ) => {
             const existingItem = state.cartProducts.find(
-                (cartProduct) => cartProduct.id === action.payload.id
+                (cartProduct) => cartProduct.id === action.payload.product.id
+            );
+            if (existingItem) {
+                if (existingItem.quantity > 1) {
+                    existingItem.quantity -= 1;
+                } else {
+                    state.cartProducts = state.cartProducts.filter(
+                        (currentProduct) =>
+                            currentProduct.id !== action.payload.product.id
+                    );
+                }
+            }
+        },
+        // update info of an item
+        updateInCart: (
+            state,
+            action: PayloadAction<{
+                product: Product | CartProduct;
+                updateInfo: { quantity: number };
+            }>
+        ) => {
+            const existingItem = state.cartProducts.find(
+                (cartProduct) => cartProduct.id === action.payload.product.id
+            );
+            if (existingItem) {
+                existingItem.quantity = action.payload.updateInfo.quantity;
+            } else {
+                state.cartProducts.push({
+                    ...action.payload.product,
+                    quantity: action.payload.updateInfo.quantity,
+                });
+            }
+        },
+        // removes an item completely from a cart
+        removeFromCart: (
+            state,
+            action: PayloadAction<{ product: Product | CartProduct }>
+        ) => {
+            const existingItem = state.cartProducts.find(
+                (cartProduct) => cartProduct.id === action.payload.product.id
             );
             if (existingItem) {
                 state.cartProducts = state.cartProducts.filter(
-                    (currentProduct) => currentProduct.id !== action.payload.id
+                    (currentProduct) =>
+                        currentProduct.id !== action.payload.product.id
                 );
             }
         },
@@ -75,5 +122,6 @@ export const totalPriceSelector = createSelector(
         );
     }
 );
-export const { addToCart, removeFromCart } = CartSlice.actions;
+export const { addOneToCart, removeOneFromCart, updateInCart, removeFromCart } =
+    CartSlice.actions;
 export default CartSlice.reducer;
