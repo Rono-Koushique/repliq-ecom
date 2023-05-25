@@ -2,9 +2,10 @@
 import Link from "next/link";
 import React, { ReactElement } from "react";
 import HomeBtn from "../_components/homeBtn";
+import { signIn } from "next-auth/react";
 
 type FormData = {
-    mobileNumber: string;
+    email: string;
     password: string;
 };
 
@@ -12,9 +13,11 @@ type Props = {};
 
 export default function LoginForm({}: Props) {
     const [formData, setFormData] = React.useState<FormData>({
-        mobileNumber: "",
+        email: "",
         password: "",
     });
+
+    const [emailInvalid, setEmailInvalid] = React.useState<boolean>(false);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
@@ -23,46 +26,68 @@ export default function LoginForm({}: Props) {
         }));
     };
 
-    const mobileNumberInvalid =
-        formData.mobileNumber !== "" &&
-        !/^(?:\+88|88)?(01[2-9]\d{8})$/.test(formData.mobileNumber);
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        await signIn("credentials", {
+            email: formData.email,
+            password: formData.password,
+            redirect: true,
+            callbackUrl: "/",
+        });
+    };
+
+    React.useEffect(() => {
+        setEmailInvalid(
+            formData.email !== "" &&
+                !/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$/.test(
+                    formData.email
+                )
+        );
+    }, [formData]);
+
+    // const mobileNumberInvalid =
+    //     formData.mobileNumber !== "" &&
+    //     !/^(?:\+88|88)?(01[2-9]\d{8})$/.test(formData.mobileNumber);
 
     return (
-        <div className="bg-white rounded-lg px-12 py-12 w-full max-w-md shadow-2xl relative z-30 overflow-hidden">
+        <form
+            className="bg-white rounded-lg px-12 py-12 w-full max-w-md shadow-2xl relative z-30 overflow-hidden"
+            onSubmit={handleSubmit}
+        >
             <HomeBtn />
             <div className="flex flex-col items-center">
                 <h1 className="text-2xl font-bold leading-snug text-gray-800">
                     Sign In
                 </h1>
-                <form className="w-full flex flex-col gap-5 mt-6">
+                <div className="w-full flex flex-col gap-5 mt-6">
                     <div className="relative z-0">
                         <input
                             type="text"
-                            id="mobileNumber"
-                            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 ${
-                                mobileNumberInvalid
+                            id="email"
+                            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none peer focus:outline-none focus:ring-0 ${
+                                emailInvalid
                                     ? "border-red-600 focus:border-red-600"
                                     : "border-blue-600 focus:border-blue-600"
                             }`}
                             placeholder=" "
-                            value={formData.mobileNumber}
+                            value={formData.email}
                             onChange={handleChange}
                         />
                         <label
-                            htmlFor="mobile-number"
-                            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                            htmlFor="email"
+                            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                         >
-                            Mobile Number
+                            Email Address
                         </label>
-                        {mobileNumberInvalid && (
+                        {emailInvalid && (
                             <p className="text-sm text-red-500">
-                                * mobile number is invalid
+                                * Email Address is invalid
                             </p>
                         )}
                     </div>
                     <div className="relative z-0">
                         <input
-                            type="text"
+                            type="password"
                             id="password"
                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=" "
@@ -83,7 +108,10 @@ export default function LoginForm({}: Props) {
                         Forgot Password?
                     </Link>
                     <div className="mt-5">
-                        <button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out">
+                        <button
+                            type="submit"
+                            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out"
+                        >
                             Sign In
                         </button>
                     </div>
@@ -98,8 +126,8 @@ export default function LoginForm({}: Props) {
                             </Link>
                         </p>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </form>
     );
 }

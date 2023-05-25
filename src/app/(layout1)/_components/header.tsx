@@ -1,10 +1,15 @@
+"use client";
 import CartButton from "@/app/(layout1)/_components/cartBtn";
 import Link from "next/link";
 import React from "react";
+import UserBox from "./userBox";
+import SigninBtn from "./signinBtn";
+import { useSession } from "next-auth/react";
 
 type Props = {};
 
 export default function Header({}: Props) {
+    const { data: session } = useSession();
     return (
         <nav className="grid grid-cols-3 px-20 py-4 h-20 bg-white/80 backdrop-blur-xl sticky z-20 top-0 shadow-lg">
             <div className="my-auto">
@@ -24,12 +29,11 @@ export default function Header({}: Props) {
             </div>
             <div className="flex gap-3 items-center ml-auto">
                 <CartButton />
-                <Link
-                    href="/auth/login"
-                    className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 px-6 py-2.5 text-white rounded-full transition duration-200 ease-in-out"
-                >
-                    Sign In
-                </Link>
+                {session?.user ? (
+                    <UserBox user={session.user} />
+                ) : (
+                    <SigninBtn />
+                )}
             </div>
         </nav>
     );

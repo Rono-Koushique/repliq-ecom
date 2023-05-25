@@ -15,7 +15,7 @@ export default function ProductCard({ product }: Props) {
             <div className="mx-auto">
                 <Link href={`/product/${id}`}>
                     <Image
-                        className="object-contain w-full h-[200px]"
+                        className="object-contain h-[200px]"
                         src={images[0]}
                         width={200}
                         height={200}
