@@ -1,7 +1,7 @@
 "use client";
 import { addOneToCart } from "@/lib/redux/slices/cartSlice";
 import { useAppDispatch } from "@/lib/redux/store";
-import { Product } from "@/types/products";
+import { Product } from "../../../types/products";
 import React from "react";
 
 type Props = {

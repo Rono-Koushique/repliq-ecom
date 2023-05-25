@@ -1,5 +1,5 @@
 import React from "react";
-import { Product } from "@/types/products";
+import { Product } from "../../../../types/products";
 import Gallery from "./gallery";
 import Details from "./details";
 

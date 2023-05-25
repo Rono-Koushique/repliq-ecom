@@ -1,5 +1,5 @@
 import AddToCartBtn from "./addToCartBtn";
-import { Product } from "@/types/products";
+import { Product } from "../../../types/products";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

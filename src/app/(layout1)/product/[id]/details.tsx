@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Product } from "@/types/products";
+import { Product } from "../../../../types/products";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
