@@ -1,4 +1,5 @@
 import { User } from "@/types/auth";
+import { signOut } from "next-auth/react";
 import React from "react";
 
 type Props = {
@@ -6,5 +7,5 @@ type Props = {
 };
 
 export default function UserBox({ user }: Props) {
-    return <div>{user.email}</div>;
+    return <div onClick={() => signOut()}>{user.email}</div>;
 }
