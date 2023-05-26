@@ -1,11 +1,15 @@
-import { User } from "@/types/auth";
-import { signOut } from "next-auth/react";
+"use client";
 import React from "react";
+import { useSession } from "next-auth/react";
 
-type Props = {
-    user: User;
-};
-
-export default function UserBox({ user }: Props) {
-    return <div onClick={() => signOut()}>{user.email}</div>;
+export default function UserBox() {
+    const { data: session, status } = useSession();
+    if (status === "authenticated") {
+        return (
+            <button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 border-2 border-blue-300 h-9  aspect-square text-white rounded-full transition duration-200 ease-in-out">
+                {session.user.email.charAt(0).toUpperCase()}
+            </button>
+        );
+    }
+    return null;
 }

@@ -13,11 +13,11 @@ export default function CartButton({}: Props) {
     return (
         <Link
             href={"/cart"}
-            className="bg-slate-500 hover:bg-slate-600 active:bg-slate-400 py-2.5 gap-2 px-4 rounded-full flex items-center"
+            className="hover:bg-slate-100 gap-2 p-1 rounded flex items-center"
         >
-            <AiOutlineShoppingCart className="text-xl text-white" />
+            <AiOutlineShoppingCart className="text-3xl text-gray-700" />
             <div
-                className={`leading-none text-sm text-white ${
+                className={`leading-none text-lg text-gray-700 ${
                     cartTotalItems === 0 ? "hidden" : "flex"
                 }`}
             >

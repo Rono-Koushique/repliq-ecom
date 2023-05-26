@@ -1,6 +1,5 @@
 import React from "react";
 import LoginForm from "./loginForm";
-import Link from "next/link";
 
 type Props = {};
 

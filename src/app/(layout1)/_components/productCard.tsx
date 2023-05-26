@@ -1,3 +1,4 @@
+"use client";
 import AddToCartBtn from "./addToCartBtn";
 import { Product } from "../../../types/products";
 import Image from "next/image";
@@ -15,11 +16,14 @@ export default function ProductCard({ product }: Props) {
             <div className="mx-auto">
                 <Link href={`/product/${id}`}>
                     <Image
-                        className="object-contain h-[200px]"
+                        className="object-contain h-[200px] opacity-0 transition duration-500 ease-in-out"
                         src={images[0]}
                         width={200}
                         height={200}
                         alt={title}
+                        onLoadingComplete={(img) =>
+                            img.classList.remove("opacity-0")
+                        }
                     />
                 </Link>
             </div>
