@@ -13,3 +13,40 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
     @apply shadow-[0_0_0px_1000px_white_inset];
 }
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .marquee {
+        animation: marquee 40s linear infinite;
+    }
+
+    .marquee2 {
+        animation: marquee2 40s linear infinite;
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    @keyframes marquee2 {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(0%);
+        }
+    }
+}

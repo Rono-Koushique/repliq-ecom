@@ -1,9 +1,9 @@
 "use client";
 import { totalPriceSelector } from "@/lib/redux/slices/cartSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
+import { useAppSelector } from "@/lib/redux/store";
 import Link from "next/link";
 import React from "react";
-import CartList from "./cartList";
+import CartList from "./_components/cartList";
 
 type Props = {};
 

@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-import { Product } from "../../../../types/products";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { FaChevronUp, FaChevronDown } from "react-icons/fa";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
 import {
     cartProductCountSelector,
     updateInCart,
 } from "@/lib/redux/slices/cartSlice";
+import { Product } from "@/types/products";
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/store";
+import RatingViewer from "./ratingViewer";
 
 type Props = {
     product: Product;
@@ -24,10 +24,28 @@ export default function Details({ product }: Props) {
     );
 
     const dispatch = useAppDispatch();
+
+    /* -------------------------------------------------------------------------- */
+    /*                              utility functions                             */
+    /* -------------------------------------------------------------------------- */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const data = event.target.value;
         setQuantity(parseInt(data));
+    };
+
+    const addOne = () => {
+        setQuantity((currentAmount: number) => {
+            if (currentAmount < parseInt(stock)) return currentAmount + 1;
+            return currentAmount;
+        });
+    };
+
+    const removeOne = () => {
+        setQuantity((currentAmount: number) => {
+            if (currentAmount > 0) return currentAmount - 1;
+            return 0;
+        });
     };
 
     const handleAddToCart = () => {
@@ -41,26 +59,7 @@ export default function Details({ product }: Props) {
                 <h2 className="text-sm">{brand}</h2>
             </div>
             <div className="flex">
-                {Array(Math.round(parseInt(rating)))
-                    .fill("")
-                    .map((_, i) => {
-                        return (
-                            <AiFillStar
-                                className="text-xl text-yellow-600"
-                                key={i}
-                            />
-                        );
-                    })}
-                {Array(5 - Math.round(parseInt(rating)))
-                    .fill("")
-                    .map((_, i) => {
-                        return (
-                            <AiOutlineStar
-                                className="text-xl text-yellow-600"
-                                key={i}
-                            />
-                        );
-                    })}
+                <RatingViewer rating={Math.round(parseInt(rating))} />
             </div>
             <div>
                 <p className="text-3xl text-slate-600">{`$${price}`}</p>
@@ -85,21 +84,13 @@ export default function Details({ product }: Props) {
                 />
                 <button
                     className="ml-4 leading-none w-8 h-8 rounded-full bg-gray-500 text-white text-xl flex items-center justify-center hover:bg-gray-600 active:bg-gray-400 "
-                    onClick={() =>
-                        setQuantity((prev) => {
-                            return prev < parseInt(stock) ? prev + 1 : prev;
-                        })
-                    }
+                    onClick={addOne}
                 >
                     <FaChevronUp className="text-sm" />
                 </button>
                 <button
                     className="ml-1 leading-none w-8 h-8 rounded-full bg-gray-500 text-white text-xl flex items-center justify-center hover:bg-gray-600 active:bg-gray-400"
-                    onClick={() =>
-                        setQuantity((prev) => {
-                            return prev > 0 ? prev - 1 : 0;
-                        })
-                    }
+                    onClick={removeOne}
                 >
                     <FaChevronDown className="text-sm" />
                 </button>

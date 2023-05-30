@@ -1,7 +1,7 @@
 import React from "react";
 import { Product } from "../../../../types/products";
-import Gallery from "./gallery";
-import Details from "./details";
+import Gallery from "./_components/gallery";
+import Details from "./_components/details";
 
 type Props = {
     params: {

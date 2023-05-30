@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { ReactElement } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import HomeBtn from "../_components/homeBtn";
 import { signIn } from "next-auth/react";
 
@@ -12,21 +12,21 @@ type FormData = {
 type Props = {};
 
 export default function LoginForm({}: Props) {
-    const [formData, setFormData] = React.useState<FormData>({
+    const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
     });
 
-    const [emailInvalid, setEmailInvalid] = React.useState<boolean>(false);
+    const [emailInvalid, setEmailInvalid] = useState<boolean>(false);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
             ...prev,
             [event.target.id]: event.target.value,
         }));
     };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         await signIn("credentials", {
             email: formData.email,
@@ -36,7 +36,7 @@ export default function LoginForm({}: Props) {
         });
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         setEmailInvalid(
             formData.email !== "" &&
                 !/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$/.test(
@@ -59,7 +59,7 @@ export default function LoginForm({}: Props) {
                 <h1 className="text-2xl font-bold leading-snug text-gray-800">
                     Sign In
                 </h1>
-                <div className="w-full flex flex-col gap-5 mt-6">
+                <div className="w-full flex flex-col gap-7 mt-6">
                     <div className="relative z-0">
                         <input
                             type="text"

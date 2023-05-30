@@ -2,15 +2,13 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import url from "@/utils/url";
 
-const handler = NextAuth({
+export const authOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: {
-                    label: "Email",
-                    type: "email",
-                },
+                name: { label: "Name", type: "text" },
+                email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials, req) {
@@ -20,6 +18,7 @@ const handler = NextAuth({
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
+                        name: credentials?.name,
                         email: credentials?.email,
                         password: credentials?.password,
                     }),
@@ -37,6 +36,7 @@ const handler = NextAuth({
         signIn: "/auth/login",
     },
     secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

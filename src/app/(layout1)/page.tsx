@@ -11,7 +11,7 @@ async function getAllProducts() {
 export default async function Home() {
     const products = await getAllProducts();
     return (
-        <main className="flex min-h-screen flex-col bg-slate-100">
+        <main className="flex min-h-screen flex-col">
             <div className="py-24 px-20">
                 {products && <ProductList products={products} />}
             </div>
