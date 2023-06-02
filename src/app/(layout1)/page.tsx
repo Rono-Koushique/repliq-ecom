@@ -12,7 +12,7 @@ export default async function Home() {
     const products = await getAllProducts();
     return (
         <main className="flex min-h-screen flex-col">
-            <div className="py-24 px-20">
+            <div className="py-20 md:py-24 px-8 md:px-16 lg:px-20">
                 {products && <ProductList products={products} />}
             </div>
         </main>

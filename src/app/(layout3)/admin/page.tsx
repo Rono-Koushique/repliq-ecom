@@ -1,7 +1,14 @@
 import React from "react";
+import { getServerSession } from "next-auth";
+import authConfig from "@/app/api/auth/[...nextauth]/config";
+import { redirect } from "next/navigation";
 
-type Props = {};
+export default async function page() {
+    const session = await getServerSession(authConfig);
 
-export default function page({}: Props) {
+    if (!session) {
+        redirect("/auth/login?callbackURL=/admin");
+    }
+
     return <div>Admin Page</div>;
 }

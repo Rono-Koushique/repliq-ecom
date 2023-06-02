@@ -1,17 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import HomeBtn from "../_components/homeBtn";
 import { signIn } from "next-auth/react";
-
-type FormData = {
-    email: string;
-    password: string;
-};
+import { LoginFormData as FormData } from "@/types/formData";
+import { useSearchParams } from "next/navigation";
 
 type Props = {};
 
 export default function LoginForm({}: Props) {
+    const searchParams = useSearchParams();
+    const callbackURL = searchParams.get("callbackURL");
+
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
@@ -32,7 +31,7 @@ export default function LoginForm({}: Props) {
             email: formData.email,
             password: formData.password,
             redirect: true,
-            callbackUrl: "/",
+            callbackUrl: callbackURL ? callbackURL : "/",
         });
     };
 
@@ -45,88 +44,73 @@ export default function LoginForm({}: Props) {
         );
     }, [formData]);
 
-    // const mobileNumberInvalid =
-    //     formData.mobileNumber !== "" &&
-    //     !/^(?:\+88|88)?(01[2-9]\d{8})$/.test(formData.mobileNumber);
-
     return (
-        <form
-            className="bg-white rounded-lg px-12 py-12 w-full max-w-md shadow-2xl relative z-30 overflow-hidden"
-            onSubmit={handleSubmit}
-        >
-            <HomeBtn />
-            <div className="flex flex-col items-center">
-                <h1 className="text-2xl font-bold leading-snug text-gray-800">
+        <form className="mt-4" onSubmit={handleSubmit}>
+            <div className="relative z-0 pt-2">
+                <input
+                    type="text"
+                    id="email"
+                    className={`block py-4 px-3 w-full text-gray-900 bg-transparent border rounded-lg border-gray-300 hover:border-gray-400 appearance-none peer focus:outline-none focus:ring-0  placeholder-shown:border ${
+                        emailInvalid
+                            ? "border-red-600 focus:border-red-600"
+                            : "border-blue-600 focus:border-blue-600"
+                    }`}
+                    placeholder=" "
+                    value={formData.email}
+                    onChange={handleChange}
+                />
+                <label
+                    htmlFor="email"
+                    className={`absolute ${
+                        emailInvalid ? "text-red-500" : "text-slate-500"
+                    } left-1 top-2 scale-75 -translate-y-1/2 p-2 bg-white ease-linear duration-150 rounded-full origin-left peer-focus:top-2 peer-focus:scale-75 ${
+                        emailInvalid
+                            ? "peer-focus:text-red-500"
+                            : "peer-focus:text-blue-500"
+                    } peer-placeholder-shown:scale-100 peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-[calc(50%+4px)]`}
+                >
+                    Email Address
+                </label>
+                {emailInvalid && (
+                    <p className="text-sm text-red-500">
+                        * Email Address is invalid
+                    </p>
+                )}
+            </div>
+
+            <div className="relative z-0 mt-2 pt-2">
+                <input
+                    type="password"
+                    id="password"
+                    className="block py-4 px-3 w-full text-gray-900 bg-transparent border rounded-lg border-gray-300 hover:border-gray-400 appearance-none peer focus:outline-none focus:ring-0 focus:border-blue-500"
+                    placeholder=" "
+                    value={formData.password}
+                    onChange={handleChange}
+                />
+                <label
+                    htmlFor="password"
+                    className={`absolute text-slate-500 left-1 top-2 scale-75 -translate-y-1/2 p-2 bg-white ease-linear duration-150 rounded-full origin-left peer-focus:top-2 peer-focus:scale-75 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-slate-500 peer-placeholder-shown:top-[calc(50%+4px)]`}
+                >
+                    Password
+                </label>
+            </div>
+
+            <div className="mt-4 flex justify-end">
+                <Link
+                    href="/"
+                    className="text-sm w-fit text-gray-400 leading-none hover:underline underline-offset-2"
+                >
+                    Forgot Password?
+                </Link>
+            </div>
+
+            <div className="mt-6">
+                <button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded-lg transition duration-200 ease-in-out"
+                >
                     Sign In
-                </h1>
-                <div className="w-full flex flex-col gap-7 mt-6">
-                    <div className="relative z-0">
-                        <input
-                            type="text"
-                            id="email"
-                            className={`block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none peer focus:outline-none focus:ring-0 ${
-                                emailInvalid
-                                    ? "border-red-600 focus:border-red-600"
-                                    : "border-blue-600 focus:border-blue-600"
-                            }`}
-                            placeholder=" "
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
-                        <label
-                            htmlFor="email"
-                            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                        >
-                            Email Address
-                        </label>
-                        {emailInvalid && (
-                            <p className="text-sm text-red-500">
-                                * Email Address is invalid
-                            </p>
-                        )}
-                    </div>
-                    <div className="relative z-0">
-                        <input
-                            type="password"
-                            id="password"
-                            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                            placeholder=" "
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
-                        <label
-                            htmlFor="password"
-                            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                        >
-                            Password
-                        </label>
-                    </div>
-                    <Link
-                        href="/"
-                        className="self-end text-sm w-fit text-gray-400 leading-none hover:underline underline-offset-2"
-                    >
-                        Forgot Password?
-                    </Link>
-                    <div className="mt-5">
-                        <button
-                            type="submit"
-                            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out"
-                        >
-                            Sign In
-                        </button>
-                    </div>
-                    <div className="self-center">
-                        <p className="text-sm text-gray-600 leading-none">
-                            Not a member?{" "}
-                            <Link
-                                href="/auth/register"
-                                className="text-blue-500 hover:underline underline-offset-2"
-                            >
-                                Sign Up now
-                            </Link>
-                        </p>
-                    </div>
-                </div>
+                </button>
             </div>
         </form>
     );

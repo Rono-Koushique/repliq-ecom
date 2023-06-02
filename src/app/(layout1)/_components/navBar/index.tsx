@@ -3,6 +3,7 @@ import React from "react";
 import SearchField from "./searchField";
 import UserField from "./userField";
 import CartField from "./cartField";
+import BrandLogo from "./brandLogo";
 
 /* -------------------------------------------------------------------------- */
 /*               also includes BrandLogo and Navlinks components              */
@@ -10,33 +11,17 @@ import CartField from "./cartField";
 
 export default function Navbar() {
     return (
-        <div className="w-full px-4 sm:px-8 py-3 lg:py-2.5 bg-slate-100">
-            <div className="container mx-auto flex items-center gap-6 lg:gap-8">
+        <nav className="bg-slate-100 w-full px-4 sm:px-8 py-3 lg:py-2.5 ">
+            <div className="max-w-screen-2xl mx-auto flex items-center gap-6 lg:gap-8">
                 <BrandLogo />
                 <Navlinks />
                 <SearchField />
                 <div className="hidden sm:flex items-center gap-6">
-                    <UserField />
                     <CartField />
+                    <UserField />
                 </div>
             </div>
-        </div>
-    );
-}
-
-function BrandLogo() {
-    return (
-        <Link
-            href="/"
-            className="flex flex-col w-fit hover:translate-y-[-0.1rem] duration-200"
-        >
-            <h1 className="leading-none m-0 text-3xl font-bold tracking-tight text-slate-700">
-                QMart
-            </h1>
-            <p className="leading-none self-end text-[0.5rem] font-light text-slate-600 uppercase ">
-                Online Shopping
-            </p>
-        </Link>
+        </nav>
     );
 }
 

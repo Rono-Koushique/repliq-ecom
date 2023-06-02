@@ -12,7 +12,7 @@ export default function AddToCartBtn({ product }: Props) {
     const dispatch = useAppDispatch();
     return (
         <button
-            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded transition duration-200 ease-in-out"
+            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-2 text-white w-full rounded-full transition duration-200 ease-in-out"
             onClick={() => dispatch(addOneToCart({ product }))}
         >
             Add to Basket
