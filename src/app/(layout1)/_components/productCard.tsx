@@ -8,9 +8,10 @@ import RatingViewer from "../product/[id]/_components/ratingViewer";
 
 type Props = {
     product: Product;
+    lastRef?: (element: any) => void;
 };
 
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({ product, lastRef }: Props) {
     const {
         id,
         title,
@@ -23,32 +24,44 @@ export default function ProductCard({ product }: Props) {
         images,
     } = product;
     return (
-        <div className="relative w-full h-full rounded-3xl p-4 shadow-[0_3px_10px_rgba(0,0,0,0.2)] z-30 shadow-slate-200 overflow-hidden group flex flex-col items-start">
-            <div className="relative w-full h-60 rounded-lg overflow-hidden">
+        <div
+            className="relative z-30 bg-white w-full h-full rounded-3xl p-4 shadow-md md:shadow-xl shadow-slate-200 group flex flex-col items-start"
+            ref={lastRef ? lastRef : null}
+        >
+            {/* -------------------------------- category -------------------------------- */}
+            <div className="hidden md:flex -top-4 absolute left-0 z-0 justify-center w-full h-16 text-xs rounded-bl-none bg-slate-100 text-slate-400 rounded-t-3xl">
+                {category}
+            </div>
+
+            <div className="absolute top-0 left-0 z-10 w-full h-full rounded-3xl bg-white" />
+
+            {/* ------------------------------- main image ------------------------------- */}
+            <div className="relative z-20 w-full overflow-hidden rounded-lg h-60">
                 <Image
-                    className="object-cover group-hover:object-contain"
+                    className="object-contain group-hover:object-contain"
                     src={images[0]}
                     fill={true}
                     alt={title}
                 />
-                <div className="absolute bottom-0 right-0 flex items-center justify-between text-xs px-3 py-1 z-10 bg-slate-200 text-slate-400 rounded-lg rounded-tr-none rounded-bl-none border-t-2 border-l-2 border-white">
-                    {category}
-                </div>
             </div>
-            <div className="mt-3">
+
+            {/* ----------------------- title, brand & description ----------------------- */}
+            <div className="relative z-20 px-2 mt-4">
                 <Link href={`/product/${id}`}>
                     <span className="text-xl font-medium leading-tight text-slate-700">
                         {title}
                     </span>
                 </Link>
-                <p className="text-xs uppercase tracking-tight w-fit rounded-sm mt-1 text-slate-400 font-semibold hover:underline underline-offset-2 cursor-pointer">
+                <p className="mt-1 text-xs font-semibold tracking-tight uppercase rounded-sm cursor-pointer w-fit text-slate-400 hover:underline underline-offset-2">
                     {brand}
                 </p>
-                <p className="text-xs line-clamp-2 mt-2 text-slate-500">
+                <p className="mt-2 text-xs line-clamp-2 text-slate-500">
                     {description}
                 </p>
             </div>
-            <div className="mt-auto pt-2 w-full flex items-end justify-between">
+
+            {/* ----------------------------- rating & price ----------------------------- */}
+            <div className="relative z-20 flex items-end justify-between w-full px-2 pt-2 mt-auto">
                 <div>
                     <span className="text-xs leading-none text-slate-400">
                         Rating:
@@ -57,9 +70,11 @@ export default function ProductCard({ product }: Props) {
                         <RatingViewer rating={Math.round(parseInt(rating))} />
                     </div>
                 </div>
-                <div className="text-xl text-slate-500 font-medium">{`$${price}`}</div>
+                <div className="text-xl font-medium text-slate-500">{`$${price}`}</div>
             </div>
-            <div className="mt-3 w-full">
+
+            {/* ------------------------------- add to cart ------------------------------ */}
+            <div className="relative z-20 w-full mt-3">
                 <AddToCartBtn product={product} />
             </div>
         </div>

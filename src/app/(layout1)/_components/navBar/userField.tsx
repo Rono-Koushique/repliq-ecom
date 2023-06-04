@@ -6,10 +6,14 @@ import { signOut, useSession } from "next-auth/react";
 import { User } from "@/types/next-auth";
 import { FaUserCircle } from "react-icons/fa";
 
-export default function UserField() {
+type Props = {
+    addClass?: string;
+};
+
+export default function UserField({ addClass = "" }: Props) {
     const { data: session, status } = useSession();
     return (
-        <div className="hidden md:flex">
+        <div className={addClass}>
             {status === "authenticated" ? (
                 <Logged user={session.user} />
             ) : (
@@ -23,9 +27,9 @@ function Logged({ user }: { user: User }) {
     return (
         <div
             onClick={() => signOut()}
-            className="flex items-center gap-1 hover:translate-y-[-0.1rem] duration-200 cursor-pointer"
+            className="flex items-center gap-1.5 hover:translate-y-[-0.1rem] duration-200 cursor-pointer"
         >
-            <p className="text-slate-500 text-sm font-semibold uppercase">
+            <p className="text-slate-500 font-semibold capitalize leading-none">
                 {user.name}
             </p>
             <FaUserCircle className="text-slate-500 text-[2rem]" />

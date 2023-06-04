@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import { signIn } from "next-auth/react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { LoginFormData as FormData } from "@/types/formData";
 import { useSearchParams } from "next/navigation";
+import { handleSubmit } from "./handleSubmit";
 
 type Props = {};
 
@@ -25,16 +25,6 @@ export default function LoginForm({}: Props) {
         }));
     };
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        await signIn("credentials", {
-            email: formData.email,
-            password: formData.password,
-            redirect: true,
-            callbackUrl: callbackURL ? callbackURL : "/",
-        });
-    };
-
     useEffect(() => {
         setEmailInvalid(
             formData.email !== "" &&
@@ -45,11 +35,12 @@ export default function LoginForm({}: Props) {
     }, [formData]);
 
     return (
-        <form className="mt-4" onSubmit={handleSubmit}>
+        <form className="mt-4" action={handleSubmit}>
             <div className="relative z-0 pt-2">
                 <input
                     type="text"
                     id="email"
+                    name="email"
                     className={`block py-4 px-3 w-full text-gray-900 bg-transparent border rounded-lg border-gray-300 hover:border-gray-400 appearance-none peer focus:outline-none focus:ring-0  placeholder-shown:border ${
                         emailInvalid
                             ? "border-red-600 focus:border-red-600"
@@ -78,11 +69,12 @@ export default function LoginForm({}: Props) {
                 )}
             </div>
 
-            <div className="relative z-0 mt-2 pt-2">
+            <div className="relative z-0 pt-2 mt-2">
                 <input
                     type="password"
+                    name="password"
                     id="password"
-                    className="block py-4 px-3 w-full text-gray-900 bg-transparent border rounded-lg border-gray-300 hover:border-gray-400 appearance-none peer focus:outline-none focus:ring-0 focus:border-blue-500"
+                    className="block w-full px-3 py-4 text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none hover:border-gray-400 peer focus:outline-none focus:ring-0 focus:border-blue-500"
                     placeholder=" "
                     value={formData.password}
                     onChange={handleChange}
@@ -95,10 +87,10 @@ export default function LoginForm({}: Props) {
                 </label>
             </div>
 
-            <div className="mt-4 flex justify-end">
+            <div className="flex justify-end mt-4">
                 <Link
                     href="/"
-                    className="text-sm w-fit text-gray-400 leading-none hover:underline underline-offset-2"
+                    className="text-sm leading-none text-gray-400 w-fit hover:underline underline-offset-2"
                 >
                     Forgot Password?
                 </Link>
@@ -107,7 +99,7 @@ export default function LoginForm({}: Props) {
             <div className="mt-6">
                 <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 active:bg-blue-400 py-3 text-white w-full rounded-lg transition duration-200 ease-in-out"
+                    className="w-full py-3 text-white transition duration-200 ease-in-out bg-blue-500 rounded-lg hover:bg-blue-600 active:bg-blue-400"
                 >
                     Sign In
                 </button>

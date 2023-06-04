@@ -4,6 +4,7 @@ import SearchField from "./searchField";
 import UserField from "./userField";
 import CartField from "./cartField";
 import BrandLogo from "./brandLogo";
+import Hamburger from "./hamburger";
 
 /* -------------------------------------------------------------------------- */
 /*               also includes BrandLogo and Navlinks components              */
@@ -11,14 +12,15 @@ import BrandLogo from "./brandLogo";
 
 export default function Navbar() {
     return (
-        <nav className="bg-slate-100 w-full px-4 sm:px-8 py-3 lg:py-2.5 ">
-            <div className="max-w-screen-2xl mx-auto flex items-center gap-6 lg:gap-8">
+        <nav className="flex flex-col h-[4rem] md:h-[4.25rem] gap-2 w-full px-4 sm:px-8 bg-white md:bg-slate-100 sticky top-0 z-50 border-b">
+            <div className="max-w-screen-2xl w-full h-full mx-auto flex items-center gap-6 lg:gap-8">
                 <BrandLogo />
-                <Navlinks />
-                <SearchField />
-                <div className="hidden sm:flex items-center gap-6">
+                <Navlinks addClass="hidden md:flex" />
+                <SearchField addClass="hidden md:flex" />
+                <div className="flex items-center gap-2 sm:gap-4 md:gap-6 ml-auto">
                     <CartField />
                     <UserField />
+                    <Hamburger addClass="md:hidden" />
                 </div>
             </div>
         </nav>
@@ -30,7 +32,7 @@ type NavLink = {
     href: string;
 };
 
-function Navlinks() {
+function Navlinks({ addClass = "" }: { addClass?: string }) {
     const links: NavLink[] = [
         {
             title: "Home",
@@ -42,7 +44,7 @@ function Navlinks() {
         },
     ];
     return (
-        <div className="hidden md:flex">
+        <div className={addClass}>
             {links.map((link, idx) => {
                 return (
                     <Link
