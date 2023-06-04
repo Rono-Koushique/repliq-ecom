@@ -4,7 +4,10 @@ type Props = {};
 
 export default function Loading({}: Props) {
     return (
-        <div role="status" className="w-full flex items-center justify-center mt-8">
+        <div
+            role="status"
+            className="w-full flex items-center justify-center py-8 md:py-16"
+        >
             <svg
                 aria-hidden="true"
                 className="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"

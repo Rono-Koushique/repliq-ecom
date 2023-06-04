@@ -38,10 +38,16 @@ export default function ProductCard({ product, lastRef }: Props) {
             {/* ------------------------------- main image ------------------------------- */}
             <div className="relative z-20 w-full overflow-hidden rounded-lg h-60">
                 <Image
-                    className="object-contain group-hover:object-contain"
+                    className="object-contain group-hover:object-contain opacity-0 transition-opacity duration-200"
                     src={images[0]}
+                    sizes="100vw, (min-width: 640px) 50vw, (min-width: 1024px) 30vw, (min-width:1280) 25vw"
                     fill={true}
                     alt={title}
+                    placeholder="empty"
+                    loading="lazy"
+                    onLoadingComplete={(image) =>
+                        image.classList.remove("opacity-0")
+                    }
                 />
             </div>
 
